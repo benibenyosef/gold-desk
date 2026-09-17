@@ -10,7 +10,7 @@ function fmt(time,date=true){return new Intl.DateTimeFormat('he-IL',{timeZone:'A
 const ago=t=>Math.max(0,Math.floor((Date.now()-new Date(t).getTime())/60000));
 const tone=d=>d==='up'?'var(--green)':d==='down'?'var(--red)':'var(--dim)';
 const TITLES={day:{up:'עולה היום',down:'יורד היום',flat:'שינוי קטן היום',unknown:'חסר נתון יומי'},week:{up:'חיובי השבוע',down:'שלילי השבוע',flat:'שינוי קטן השבוע',unknown:'חסר בסיס שבועי'}};
-let lastMarkets=null,calendarData=null,period='today',nextEvent=null;
+let lastMarkets=null,calendarData=null,period='today',impactFilter='all',impactSort='impactAsc',nextEvent=null;
 const busy=new Set();
 async function get(path){const r=await fetch(path,{cache:'no-store',signal:AbortSignal.timeout(24000)});if(!r.ok)throw Error('Source unavailable');return r.json();}
 function setTheme(mode){document.documentElement.dataset.theme=mode;$('themeBtn').textContent=mode==='dark'?'מצב בהיר':'מצב כהה';$('themeBtn').setAttribute('aria-pressed',String(mode==='dark'));try{localStorage.setItem('goldmacro-theme',mode);}catch{}}
@@ -76,7 +76,17 @@ function eventInfo(title){
  for(const [re,he,why] of defs)if(re.test(title))return {he,why};return {he:'פרסום כלכלי בארה״ב',why:'יש לקרוא את הפרסום המקורי ואת תגובת השוק לפני שמסיקים השפעה על הזהב.'};
 }
 const impact=e=>({High:'גבוהה',Medium:'בינונית',Low:'נמוכה',Unknown:'לא צוין'}[e.impact]||'לא צוין');
-const chip=e=>'<span class="sig '+(e.impact==='High'?'sig-neg':e.impact==='Medium'?'sig-warn':'sig-neutral')+'">'+impact(e)+'</span>';
+const chip=e=>{const color={Low:'low',Medium:'medium',High:'high'}[e.impact];return '<span class="sig event-impact">'+(color?'<span class="impact-dot impact-'+color+'" aria-hidden="true"></span>':'')+impact(e)+'</span>';};
+function selectCalendarEvents(events,filter,sort){
+ const rank={Low:1,Medium:2,High:3};
+ return events.filter(e=>filter==='all'||e.impact===filter).sort((a,b)=>{
+  if(sort==='time')return new Date(a.date)-new Date(b.date);
+  const ra=rank[a.impact],rb=rank[b.impact];
+  if(ra===undefined&&rb!==undefined)return 1;
+  if(rb===undefined&&ra!==undefined)return -1;
+  return ((ra||0)-(rb||0))*(sort==='impactDesc'?-1:1)||new Date(a.date)-new Date(b.date);
+ });
+}
 function important(e){return ['High','Medium'].includes(e.impact)||/FOMC|Fed.*Speaks/.test(e.title);}
 function next(){const e=calendarData?.events.find(e=>important(e)&&new Date(e.date)>Date.now());nextEvent=e||null;
  if(!e){$('nextEventBox').innerHTML='<p class="event-description">אין אירוע עתידי משמעותי ברשימת המקור הנוכחית. הדבר אינו מעיד שאין סיכונים או חדשות בלתי צפויות.</p>';return;}
@@ -87,12 +97,16 @@ function renderCalendar(){
  if(!calendarData)return;
  const today=dateKey(),todayDate=new Date(today+'T12:00:00Z'),day=todayDate.getUTCDay();todayDate.setUTCDate(todayDate.getUTCDate()-(day===0?6:day-1));const monday=todayDate.toISOString().slice(0,10),end=new Date(todayDate);end.setUTCDate(end.getUTCDate()+7);const endKey=end.toISOString().slice(0,10);
  const weekEvents=calendarData.events.filter(e=>dateKey(e.date)>=monday&&dateKey(e.date)<endKey);
- const items=period==='today'?weekEvents.filter(e=>dateKey(e.date)===today):weekEvents;
+ const periodEvents=period==='today'?weekEvents.filter(e=>dateKey(e.date)===today):weekEvents;
+ const items=selectCalendarEvents(periodEvents,impactFilter,impactSort);
+ text('calendarCount',items.length+' מתוך '+periodEvents.length+' אירועים');
  if(!weekEvents.length){$('calendarBody').innerHTML='<tr><td colspan="6">המקור אינו מציג אירועים לשבוע הנוכחי. אין להסיק מכך שהשבוע רגוע.</td></tr>';return;}
- $('calendarBody').innerHTML=items.length?items.map(e=>{const info=eventInfo(e.title),elapsed=new Date(e.date)<=Date.now();return '<tr><td>'+fmt(e.date)+(elapsed?'<span class="en">המועד עבר</span>':'')+'</td><td><strong>'+esc(info.he)+'</strong><span class="en" dir="ltr">'+esc(e.title)+'</span></td><td>'+chip(e)+'</td><td dir="ltr">'+esc(e.forecast||'—')+'</td><td dir="ltr">'+esc(e.previous||'—')+'</td><td>'+esc(e.actual??'לא מסופק')+'</td></tr>';}).join(''):'<tr><td colspan="6">לא מופיעים אירועים אמריקאיים להיום במקור הנוכחי.</td></tr>';
+ $('calendarBody').innerHTML=items.length?items.map(e=>{const info=eventInfo(e.title),elapsed=new Date(e.date)<=Date.now();return '<tr><td>'+fmt(e.date)+(elapsed?'<span class="en">המועד עבר</span>':'')+'</td><td><strong>'+esc(info.he)+'</strong><span class="en" dir="ltr">'+esc(e.title)+'</span></td><td>'+chip(e)+'</td><td dir="ltr">'+esc(e.forecast||'—')+'</td><td dir="ltr">'+esc(e.previous||'—')+'</td><td>'+esc(e.actual??'לא מסופק')+'</td></tr>';}).join(''):'<tr><td colspan="6">'+(periodEvents.length?'לא נמצאו אירועים ברמת ההשפעה שנבחרה. אפשר לבחור כל הרמות.':'לא מופיעים אירועים אמריקאיים להיום במקור הנוכחי.')+'</td></tr>';
 }
 async function refreshCalendar(){if(busy.has('calendar'))return;busy.add('calendar');try{calendarData=await get('/api/calendar');text('calendarStamp',calendarData.source+' · שליפה אחרונה: '+fmt(calendarData.fetchedAt)+(calendarData.stale?' · '+calendarData.notice:''));$('calendarStamp').classList.toggle('unavailable',calendarData.stale);renderCalendar();next();}catch{text('calendarStamp','מקור היומן לא זמין · אין רשימה חדשה');if(!calendarData){$('calendarBody').innerHTML='<tr><td colspan="6">לא התקבל יומן עדכני. אין להסיק מכך שאין אירועים.</td></tr>';text('nextEventBox','יומן האירועים אינו זמין כרגע.');}}finally{busy.delete('calendar');}}
 document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{period=b.dataset.period;document.querySelectorAll('[data-period]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b));});renderCalendar();}));
+document.querySelectorAll('[data-impact]').forEach(b=>b.addEventListener('click',()=>{impactFilter=b.dataset.impact;document.querySelectorAll('[data-impact]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b));});renderCalendar();}));
+$('impactSort').addEventListener('change',e=>{impactSort=e.target.value;renderCalendar();});
 async function refreshNews(){if(busy.has('news'))return;busy.add('news');try{const data=await get('/api/news');text('newsStamp',data.stale?data.notice+' · שליפה עברית אחרונה: '+fmt(data.fetchedAt):'בדיקת מקור: '+fmt(data.fetchedAt));$('newsStamp').classList.toggle('unavailable',data.stale);$('newsGrid').innerHTML=data.items.length?data.items.map(n=>'<article class="card news-card"><span class="news-source">'+esc(n.source)+'</span><h3><a href="'+esc(n.url)+'" target="_blank" rel="noopener">'+esc(n.title)+' ↗</a></h3><span class="news-time">פורסם: '+fmt(n.publishedAt)+' · שעון ישראל</span></article>').join(''):'<div class="card">לא נמצאו כותרות עדכניות במקור. אין בכך קביעה שלא התרחשו אירועים.</div>';}catch{text('newsStamp','עדכון החדשות נכשל');if(!$('newsGrid').querySelector('article'))$('newsGrid').innerHTML='<div class="card">מקור החדשות אינו זמין כרגע. ניסיון נוסף יבוצע אוטומטית.</div>';}finally{busy.delete('news');}}
 async function refreshYields(){if(busy.has('yields'))return;busy.add('yields');try{const data=await get('/api/yields');$('yieldGrid').innerHTML=data.items.length?data.items.map(q=>'<article class="card yield-card"><div><h4>'+(q.series==='DGS2'?'תשואת אג״ח לשנתיים':'תשואה ריאלית · 10 שנים')+'</h4><p>יום מדידה: '+esc(q.date)+'<br>שינוי מהמדידה הקודמת: <b dir="ltr">'+(Number.isFinite(q.changeBps)?signed(q.changeBps,1)+' bp':'—')+'</b></p><a href="'+esc(q.url)+'" target="_blank" rel="noopener">'+esc(q.source)+' · '+esc(q.series)+' ↗</a></div><strong dir="ltr">'+num(q.value)+'%</strong></article>').join(''):'<div class="card">נתוני התשואות היומיים אינם זמינים כרגע.</div>';if(data.unavailable.length)$('yieldGrid').insertAdjacentHTML('beforeend','<p class="small-note unavailable">חסר מקור: '+esc(data.unavailable.join(', '))+'</p>');}catch{$('yieldGrid').innerHTML='<div class="card">מקור התשואות היומיות אינו זמין כרגע.</div>';}finally{busy.delete('yields');}}
 async function refreshAll(){const button=$('refreshAll');button.disabled=true;try{await Promise.allSettled([refreshMarkets(),refreshCalendar(),refreshNews(),refreshYields()]);}finally{button.disabled=false;}}
