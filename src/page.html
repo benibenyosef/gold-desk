@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOLD DESK | חדשות ומאקרו לשוק הזהב</title>
+<meta name="description" content="תמונת מצב מאקרו-כלכלית המשפיעה על חוזי הזהב GC ו-MGC: אירועים קרובים, דולר, תשואות ומדיניות הפד.">
+<meta name="theme-color" content="#f6f5f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ Design tokens — light first ============ */
+  :root{
+    --bg:#f6f5f1;
+    --panel:#ffffff;
+    --panel-2:#f1efe8;
+    --line:#c9c4b8;
+    --line-soft:#e0dcd2;
+    --text:#14161a;          /* 15.8:1 on --bg */
+    --dim:#3f444d;           /* 9.6:1  on --panel */
+    --dim-2:#585e69;         /* 6.4:1  on --panel */
+    --gold:#7a5a0c;          /* 6.4:1  on --panel */
+    --gold-2:#6b4e08;        /* 7.6:1  on --panel */
+    --gold-wash:#fbf4e2;
+    --green:#166b46;         /* 6.0:1 */
+    --red:#a81f1a;           /* 6.5:1 */
+    --amber:#7a4e04;         /* 7.4:1 */
+    --focus:#0b4fd1;
+    --shadow:0 1px 2px rgba(20,22,26,.06), 0 1px 10px rgba(20,22,26,.04);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b0d10; --panel:#12151a; --panel-2:#181c23;
+    --line:#39404c; --line-soft:#272c35;
+    --text:#f2efe8; --dim:#c2c0b8; --dim-2:#a3a49e;
+    --gold:#e3c169; --gold-2:#efd489; --gold-wash:#201c10;
+    --green:#5edaa0; --red:#ff8a80; --amber:#f1b757;
+    --focus:#8ab4ff;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+  @media (prefers-contrast: more){
+    :root{ --dim:#22262d; --dim-2:#2c313a; --line:#8d8779; --gold:#5c4305; --gold-2:#5c4305; }
+    :root[data-theme="dark"]{ --dim:#f0eee8; --dim-2:#e2e0d9; --line:#6d7684; }
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Heebo',-apple-system,'Segoe UI',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .mono{font-family:'JetBrains Mono','Courier New',monospace;}
+  a{color:var(--gold-2);text-underline-offset:3px;}
+  a:hover{text-decoration-thickness:2px;}
+  ::selection{background:rgba(122,90,12,.22);}
+
+  /* keyboard focus — visible everywhere */
+  :focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:absolute;inset-inline-start:12px;top:-60px;z-index:50;
+    background:var(--panel);color:var(--text);border:2px solid var(--focus);
+    padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;
+    transition:top .15s ease;
+  }
+  .skip-link:focus{top:12px;}
+  @media (prefers-reduced-motion: reduce){ .skip-link{transition:none;} }
+
+  .wrap{max-width:820px;margin:0 auto;padding:24px 20px 64px;}
+
+  /* ---------- header ---------- */
+  header.top{padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .brand{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .brand h1{font-size:26px;font-weight:800;margin:0 0 6px;line-height:1.3;color:var(--text);}
+  .brand h1 span{color:var(--gold-2);}
+  .brand .sub{color:var(--dim);font-size:15px;margin:0;max-width:52ch;}
+  .head-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .clock{
+    font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--gold-2);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:8px 12px;white-space:nowrap;box-shadow:var(--shadow);
+  }
+  .clock b{color:var(--dim);font-weight:500;font-size:12.5px;display:block;margin-bottom:2px;font-family:'Heebo',sans-serif;}
+  .theme-btn{
+    font:inherit;font-size:14px;font-weight:600;color:var(--text);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:0 14px;min-height:44px;cursor:pointer;box-shadow:var(--shadow);
+  }
+  .theme-btn:hover{background:var(--panel-2);}
+  .meta-line{margin-top:14px;font-size:14px;color:var(--dim);display:flex;gap:16px;flex-wrap:wrap;}
+
+  details.gcinfo{margin-top:14px;}
+  details.gcinfo summary{
+    cursor:pointer;font-size:15px;color:var(--gold-2);font-weight:600;
+    display:inline-flex;align-items:center;gap:8px;min-height:44px;
+  }
+  details.gcinfo summary::marker{color:var(--gold-2);}
+  details.gcinfo p{font-size:15px;color:var(--dim);margin:6px 0 0;max-width:64ch;}
+
+  /* ---------- section shell ---------- */
+  section{margin-bottom:30px;}
+  h2.eyebrow{
+    font-size:15px;color:var(--dim);margin:0 0 10px;font-weight:700;
+    letter-spacing:.2px;
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:20px 22px;box-shadow:var(--shadow);
+  }
+
+  /* ---------- signal chips (text + icon, never colour alone) ---------- */
+  .sig{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13.5px;font-weight:700;border-radius:999px;
+    padding:2px 10px;border:1px solid currentColor;white-space:nowrap;
+  }
+  .sig-neg{color:var(--red);background:color-mix(in srgb, var(--red) 8%, transparent);}
+  .sig-warn{color:var(--amber);background:color-mix(in srgb, var(--amber) 8%, transparent);}
+  .sig-pos{color:var(--green);background:color-mix(in srgb, var(--green) 8%, transparent);}
+  .sig-neutral{color:var(--dim);background:transparent;}
+
+  /* ---------- hero ---------- */
+  .hero{border-inline-start:5px solid var(--red);}
+  .hero-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+  .hero h3{font-size:22px;margin:0;font-weight:800;color:var(--text);}
+  .hero .lead{font-size:16.5px;color:var(--text);margin:0 0 16px;max-width:62ch;}
+  .hero .stamp{font-size:13.5px;color:var(--dim-2);margin:14px 0 0;}
+
+  .factors{list-style:none;margin:16px 0 0;padding:16px 0 0;border-top:1px solid var(--line-soft);}
+  .factors li{display:flex;gap:10px;font-size:15.5px;color:var(--text);padding:6px 0;align-items:flex-start;}
+  .factors li .sig{flex:none;margin-top:2px;}
+  .conclusion{
+    margin-top:16px;padding-top:16px;border-top:1px solid var(--line-soft);
+    font-size:16px;color:var(--text);font-weight:600;max-width:62ch;
+  }
+
+  /* ---------- next event ---------- */
+  .event-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+  .event-name{font-size:19px;font-weight:700;margin:0;}
+  .event-name .en{font-weight:400;color:var(--dim);font-size:15px;}
+  .event-meta{margin-top:8px;font-size:15px;color:var(--dim);display:flex;gap:16px;flex-wrap:wrap;}
+  .event-grid{
+    margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;
+    padding-top:16px;border-top:1px solid var(--line-soft);
+  }
+  .event-grid .k{font-size:13.5px;color:var(--dim);margin:0 0 3px;font-weight:600;}
+  .event-grid .v{font-size:15.5px;color:var(--text);margin:0;}
+  .event-why{margin-top:16px;padding-top:16px;border-top:1px solid var(--line-soft);font-size:15.5px;color:var(--text);max-width:64ch;}
+
+  .countdown{
+    margin-top:18px;text-align:center;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:10px;padding:16px 12px;
+  }
+  .countdown .num{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--gold-2);letter-spacing:.5px;}
+  .countdown .lbl{font-size:13.5px;color:var(--dim);margin-top:4px;}
+  .countdown.alert{border-color:var(--amber);border-width:2px;}
+  .countdown.alert .num{color:var(--amber);}
+  .countdown.critical{border-color:var(--red);border-width:2px;}
+  .countdown.critical .num{color:var(--red);}
+  .pre-alert{margin:12px 0 0;font-size:15px;text-align:center;color:var(--amber);font-weight:700;}
+  .pre-alert.critical{color:var(--red);}
+
+  /* ---------- risk ---------- */
+  .risk-badge{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .risk-badge h3{margin:0;font-size:20px;font-weight:800;color:var(--text);}
+  .risk-list{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--line-soft);}
+  .risk-list li{font-size:15.5px;color:var(--text);padding:6px 0;display:flex;gap:10px;align-items:flex-start;}
+
+  /* ---------- timeline ---------- */
+  .timeline{margin:0;padding:0;list-style:none;}
+  .t-row{display:grid;grid-template-columns:76px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-soft);}
+  .t-row:last-child{border-bottom:none;}
+  .t-row:first-child{padding-top:0;}
+  .t-time{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--gold-2);font-weight:600;padding-top:2px;}
+  .t-name{font-size:16px;font-weight:700;margin:0 0 4px;}
+  .t-name .en{font-weight:400;color:var(--dim);font-size:14px;}
+  .t-why{font-size:15px;color:var(--dim);margin:4px 0 0;max-width:58ch;}
+  .empty-note{font-size:15.5px;color:var(--dim);padding:4px 0;margin:0;}
+
+  /* ---------- stat cards ---------- */
+  .stat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .stat-head .name{font-size:16px;font-weight:700;}
+  .stat-row{display:flex;align-items:baseline;gap:12px;margin-top:8px;flex-wrap:wrap;}
+  .stat-row .big{font-family:'JetBrains Mono',monospace;font-size:27px;font-weight:700;}
+  .stat-row .chg{font-size:14.5px;color:var(--dim);}
+  .stat-note{font-size:15px;color:var(--dim);margin-top:12px;}
+  .impact-line{margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media (max-width:640px){.two-col{grid-template-columns:1fr;} .event-grid{grid-template-columns:1fr;}}
+
+  /* ---------- fed / data cards ---------- */
+  .fed-card p{font-size:15.5px;color:var(--text);margin:0 0 12px;max-width:66ch;}
+  .fed-card p:last-child{margin-bottom:0;}
+  .fed-source{font-size:13.5px;color:var(--dim);margin-top:14px;padding-top:14px;border-top:1px solid var(--line-soft);}
+
+  .data-card{margin-bottom:14px;}
+  .data-card:last-child{margin-bottom:0;}
+  .data-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .data-head h3{font-size:16.5px;font-weight:700;margin:0;}
+  .data-head .when{font-size:13.5px;color:var(--dim);}
+  .data-figs{display:flex;gap:26px;margin-top:14px;flex-wrap:wrap;list-style:none;padding:0;}
+  .data-figs .k{font-size:13px;color:var(--dim);margin:0 0 2px;font-weight:600;}
+  .data-figs .v{font-family:'JetBrains Mono',monospace;font-size:17px;margin:0;font-weight:600;}
+  .data-verdict{margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line-soft);font-size:15px;color:var(--text);max-width:66ch;display:flex;gap:10px;align-items:flex-start;}
+
+  /* ---------- changed ---------- */
+  .change-list{list-style:none;margin:0;padding:0;}
+  .change-list li{display:flex;gap:12px;font-size:15.5px;padding:10px 0;border-bottom:1px solid var(--line-soft);align-items:flex-start;}
+  .change-list li:last-child{border-bottom:none;}
+
+  /* ---------- week ---------- */
+  .week-grid{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .week-row{display:grid;grid-template-columns:140px 1fr;gap:14px;padding:14px 18px;background:var(--panel);border-bottom:1px solid var(--line-soft);}
+  .week-row:last-child{border-bottom:none;}
+  .week-row.is-today{background:var(--gold-wash);border-inline-start:4px solid var(--gold);}
+  .wd{font-size:15px;font-weight:700;}
+  .wd small{display:block;font-weight:400;color:var(--dim);font-size:13px;margin-top:1px;}
+  .we{font-size:15.5px;color:var(--text);align-self:center;}
+  @media (max-width:560px){.week-row{grid-template-columns:1fr;gap:4px;}}
+
+  .ahead-list{list-style:none;margin:18px 0 0;padding:0;}
+  .ahead-list li{display:flex;gap:14px;font-size:15.5px;color:var(--text);padding:8px 0;border-bottom:1px solid var(--line-soft);}
+  .ahead-list li:last-child{border-bottom:none;}
+  .ahead-list li .d{font-family:'JetBrains Mono',monospace;color:var(--gold-2);font-weight:700;flex:none;min-width:56px;}
+  /* ---------- calendar table ---------- */
+  .table-wrap{overflow-x:auto;padding:0;}
+  table.cal{border-collapse:collapse;width:100%;min-width:640px;font-size:15px;}
+  table.cal th,table.cal td{text-align:start;padding:10px 14px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  table.cal thead th{font-size:13.5px;color:var(--dim);background:var(--panel-2);border-bottom:1px solid var(--line);position:sticky;top:0;}
+  table.cal th.daysep{background:var(--panel-2);font-size:14px;font-weight:700;color:var(--text);}
+  table.cal tr.hot td{background:var(--gold-wash);}
+  table.cal tr.hot td:first-child{border-inline-start:4px solid var(--gold);}
+
+  /* ---------- central bank rates ---------- */
+  .rates{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .rates li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px;}
+  .r-cty{font-size:14.5px;color:var(--dim);}
+  .r-val{font-size:18px;font-weight:700;margin-inline-start:auto;}
+
+  /* ---------- dot plot list ---------- */
+  .dots{list-style:none;margin:8px 0 0;padding:0;}
+  .dots li{display:flex;gap:14px;font-size:15.5px;padding:7px 0;border-bottom:1px solid var(--line-soft);align-items:flex-start;}
+  .dots li:last-child{border-bottom:none;}
+  .d-v{flex:none;min-width:58px;font-weight:700;color:var(--gold-2);}
+</style>
+<style>
+:root{--bg:#f3f5f8;--panel:#fff;--panel-2:#f6f8fb;--line:#d4dce6;--line-soft:#e8ecf1;--text:#142238;--dim:#4e5c70;--dim-2:#647287;--gold:#886723;--gold-2:#9b7628;--gold-wash:#f7f1e3;--green:#187457;--red:#bc3d45;--amber:#896723;--shadow:none}
+:root[data-theme="dark"]{--bg:#0d1521;--panel:#152132;--panel-2:#1b293d;--line:#35455b;--line-soft:#28394f;--text:#edf2f9;--dim:#bac8d9;--dim-2:#a0b0c5;--gold:#d7b86c;--gold-2:#dfbf76;--gold-wash:#2c291e;--red:#ff929a;--green:#67d9b0}
+html{scroll-behavior:smooth;scroll-padding-top:30px}body{font-size:16px;line-height:1.7}.wrap{max-width:1440px;padding:0 40px 50px}header.top{margin-bottom:0;padding:0;border:0}.brand{padding:28px 0 24px;align-items:center;flex-wrap:nowrap}.brand h1{display:flex;align-items:center;gap:12px;font-size:32px;letter-spacing:-1px;margin:0}.brand-name{font-weight:800;color:var(--text)!important}.brand-name>span{color:var(--gold)}.brand-mark{display:grid;place-items:center;background:#17283f;color:#dfbf76!important;width:44px;height:44px;font-size:31px;border-bottom:3px solid #c4a65f;letter-spacing:0}.brand .sub{font-size:14px;margin-top:3px}.clock{border:0;border-inline-start:1px solid var(--line);border-radius:0;padding:0 18px;margin:0;background:none;color:var(--text);display:flex;flex-direction:column;font-size:17px;gap:2px}.clock b{font-family:Heebo,sans-serif;font-size:12px;color:var(--dim)}.theme-btn{font-size:14px;border:1px solid var(--line);border-radius:5px;background:var(--panel);padding:8px 12px}.desk-nav{display:flex;align-items:center;gap:32px;border-top:1px solid var(--line);border-bottom:3px solid #17283f;overflow-x:auto;white-space:nowrap}.desk-nav a{font-size:15px;font-weight:600;text-decoration:none;color:var(--dim);padding:14px 0;position:relative}.desk-nav a:hover,.desk-nav a.active{color:var(--text)}.desk-nav .active:after{content:'';position:absolute;bottom:0;right:0;left:0;height:3px;background:#ba9442}.desk-nav>span{margin-inline-start:auto;color:var(--dim-2);font-size:13px}.meta-line{font-size:12px;color:var(--dim-2);margin:12px 0}.market-strip{display:grid;grid-template-columns:180px repeat(4,1fr);background:var(--panel);border:1px solid var(--line-soft);margin:18px 0 30px}.market-strip>div{padding:14px 24px;border-inline-start:1px solid var(--line-soft);display:flex;flex-direction:column}.market-strip .strip-label{background:#17283f;color:#fff;font-size:15px;font-weight:600;justify-content:center;border:0}.strip-label small{color:#c0ccdd}.market-strip span,.market-strip small{font-size:12px;color:var(--dim)}.market-strip strong{font-size:25px;font-family:'JetBrains Mono',monospace;align-self:flex-start;letter-spacing:-1px}.market-strip .down{color:var(--red)}#main>section{margin-top:36px;margin-bottom:0}.lead-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start}.lead-grid section{margin:0}.eyebrow{font-size:15px;letter-spacing:0;color:var(--text);font-weight:700;padding:0 0 10px;margin:0 0 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}.eyebrow:before{content:'';width:4px;height:16px;background:var(--gold);flex-shrink:0}.card{border:1px solid var(--line-soft);border-radius:5px;box-shadow:none;padding:22px}.hero{background:var(--panel);border-top:3px solid #be9a49;padding:28px 32px}.hero-top{display:block}.hero h3{font-size:clamp(28px,3.2vw,46px);line-height:1.2;max-width:19ch;margin:0 0 20px;font-weight:800;letter-spacing:-1px}.hero .lead{font-size:17px;line-height:1.9;margin-top:18px;color:var(--dim)}.sig{font-size:12px;border:0;border-radius:3px;padding:3px 9px;white-space:normal;display:inline-flex}.sig-neg{color:var(--red);background:color-mix(in srgb,var(--red) 8%,var(--panel))}.sig-pos{color:var(--green);background:color-mix(in srgb,var(--green) 8%,var(--panel))}.sig-warn,.sig-neutral{background:var(--gold-wash);color:var(--gold)}.conclusion{background:var(--panel-2);border:0;border-inline-start:3px solid var(--gold);padding:14px 18px;font-size:15px;margin-top:22px}.stamp{font-size:12px;color:var(--dim-2)}.factor-details{border-top:1px solid var(--line-soft);margin-top:22px;padding-top:14px}.factor-details summary{cursor:pointer;font-size:14px;font-weight:600;display:flex;justify-content:space-between}.factors{margin-top:16px}.factors li{font-size:15px}.news-rail{display:flex;flex-direction:column;gap:25px}.news-rail .card{padding:20px}.news-rail .event-name{font-size:19px;line-height:1.5}.news-rail .en{display:block;font-size:12px;color:var(--dim-2);font-weight:400}.event-why{font-size:14px;color:var(--dim)}.countdown{border-radius:3px;background:#17283f!important;color:#fff;border:0;padding:16px;margin-top:15px}.countdown .num{font-size:30px;color:#dfbf76}.countdown .lbl{font-size:12px;color:#c0ccdd}.risk-list li{font-size:14px;align-items:start}.risk-list{padding-top:14px}.event-grid .v{font-size:15px}.section-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.section-top h2{font-size:22px;margin:0}.section-top p{font-size:13px;color:var(--dim);margin:2px 0}.section-top a{font-size:14px;text-decoration:none}.chart-frame{height:500px;background:var(--panel);border:1px solid var(--line);border-radius:5px;overflow:hidden}.chart-frame iframe{height:100%;width:100%;border:0}.chart-note{font-size:12px;color:var(--dim-2)}.article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.article-grid .card{margin:0;display:flex;flex-direction:column;border-top:2px solid var(--line);padding:22px}.data-head{display:block}.data-head h3{font-size:22px;line-height:1.35;margin:0 0 8px}.data-head .when{font-size:12px}.data-grid{margin-top:18px}.data-verdict{font-size:14px;margin-top:auto;padding-top:18px}.two-col{gap:24px}.big{font-size:36px!important}.table-wrap{padding:0;overflow:auto}table{min-width:620px;font-size:14px}thead{background:var(--panel-2)}th,td{padding:16px!important}.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.rates li{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line-soft);padding:16px}.r-val{font-size:26px}.dots li{padding:14px 0}.d-v{color:var(--gold)}footer{margin-top:44px;border-top:3px solid #17283f;padding-top:24px;font-size:13px}section{scroll-margin-top:24px}
+@media(min-width:1050px){#secToday{display:none}#secFed,#secGeo{display:inline-block;width:calc(50% - 14px);vertical-align:top}#secFed{margin-inline-end:23px}}@media(max-width:1050px){.wrap{padding:0 24px 40px}.lead-grid{grid-template-columns:minmax(0,1fr) 300px;gap:20px}.hero{padding:24px}.market-strip{grid-template-columns:140px repeat(4,1fr)}.market-strip>div{padding:12px}.article-grid{grid-template-columns:repeat(2,1fr)}.desk-nav{gap:24px}}@media(max-width:760px){.wrap{padding:0 16px 30px}.brand{padding:20px 0;gap:12px}.brand h1{font-size:25px}.brand-mark{width:34px;height:36px;font-size:24px}.brand .sub{font-size:12px}.head-tools{gap:8px}.clock{padding:0 8px;font-size:14px}.theme-btn{font-size:12px;padding:7px}.desk-nav{gap:23px}.desk-nav a{font-size:14px}.desk-nav>span{display:none}.market-strip{grid-template-columns:repeat(2,1fr);margin:18px 0 24px}.market-strip .strip-label{grid-column:1/-1;flex-direction:row;justify-content:space-between}.market-strip>div{border-bottom:1px solid var(--line-soft);padding:12px 16px}.market-strip strong{font-size:23px}.lead-grid{display:flex;flex-direction:column;gap:24px}.news-rail{width:100%}.hero h3{font-size:33px;max-width:100%}.hero{padding:22px}.hero .lead{font-size:16px}.article-grid{grid-template-columns:1fr}.chart-frame{height:420px}.section-top{gap:16px}.section-top a{font-size:12px}.rates{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.meta-line{line-height:1.6}.news-rail .event-name{font-size:20px}}
+</style><style>.quote-panel{margin:20px 0 30px!important;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:5px;padding:24px 28px}.quote-panel-head{display:flex;align-items:center;justify-content:space-between;gap:20px}.quote-kicker{font-size:12px;letter-spacing:1.6px;color:var(--gold);margin:0}.quote-panel h2{font-size:24px;margin:4px 0}.quote-panel-head p:not(.quote-kicker){font-size:14px;color:var(--dim);margin:0}.quote-actions{display:flex;gap:12px;align-items:center}.delay-tag{font-size:13px;padding:5px 10px;background:var(--gold-wash);color:var(--gold);border-radius:3px}#refreshQuote{font:inherit;font-size:14px;background:var(--panel-2);color:var(--text);border:1px solid var(--line);padding:8px 14px;border-radius:4px;cursor:pointer}#refreshQuote:disabled{opacity:.55;cursor:wait}.quote-content{display:grid;grid-template-columns:1fr 1.5fr;gap:32px;align-items:center;margin:22px 0}.quote-unit,.quote-stats span{font-size:14px;color:var(--dim)}.quote-price{font-family:'JetBrains Mono',monospace;font-size:clamp(36px,4vw,54px);font-weight:700;letter-spacing:-2px;text-align:right;line-height:1.5}#quoteChange{font-family:'JetBrains Mono',monospace;font-size:17px;text-align:right}.quote-stats{display:grid;grid-template-columns:repeat(4,1fr);border-inline-start:1px solid var(--line);padding-inline-start:28px;gap:22px}.quote-stats>div{display:flex;flex-direction:column;gap:8px}.quote-stats strong{font:600 19px 'JetBrains Mono',monospace;text-align:right}.quote-footer{border-top:1px solid var(--line-soft);padding-top:12px;display:flex;gap:16px;justify-content:space-between;align-items:center}.quote-footer p,.quote-footer a,.quote-footnote{font-size:12px;color:var(--dim-2);margin:0}.quote-footnote{margin-top:8px}.quote-footer a{white-space:nowrap}.quote-error{color:var(--red)!important}@media(max-width:900px){.quote-content{grid-template-columns:1fr}.quote-stats{border:0;border-top:1px solid var(--line);padding:20px 0 0}}@media(max-width:600px){.quote-panel{padding:20px}.quote-panel-head{align-items:start;flex-direction:column}.quote-stats{grid-template-columns:repeat(2,1fr)}.quote-footer{align-items:start;flex-direction:column;gap:6px}.quote-price{font-size:44px}.quote-actions{flex-wrap:wrap}}@media(min-width:1050px){#secToday{display:block}}</style><style>.page-meta{display:flex;justify-content:space-between;align-items:center;gap:15px;font-size:12px;color:var(--dim-2);padding-top:14px}button{font-family:inherit}#refreshAll,.calendar-controls button{font-size:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:4px;padding:7px 13px;cursor:pointer}#refreshAll:disabled{opacity:.5}.quote-panel{margin-top:20px!important}.market-hero{padding:26px!important}.horizon-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);padding-bottom:24px;gap:22px}.horizon:nth-child(2){border-inline-start:1px solid var(--line);padding-inline-start:24px}.horizon>span{font-size:14px;color:var(--dim)}.horizon h3{font-size:28px!important;line-height:1.3!important;letter-spacing:-.5px;margin:7px 0!important;max-width:none}.horizon strong{font:600 23px 'JetBrains Mono',monospace;display:block;text-align:right}.horizon small{display:block;font-size:12px;color:var(--dim-2);margin-top:8px}.summary-lead{font-size:19px;line-height:1.8;font-weight:500;margin:22px 0}.interpretation{padding:17px 20px;border-inline-start:3px solid var(--gold);background:var(--panel-2)}.interpretation-label{font-size:12px;color:var(--gold);font-weight:700}.interpretation p{font-size:16px;margin:7px 0 0}.watch-box h4{font-size:15px;margin:20px 0 10px}.watch-box ul{padding-inline-start:20px;margin:0}.watch-box li{font-size:14px;color:var(--dim);margin:6px 0}.range-head{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:4px 0 15px}.range-head>span{font-size:12px;color:var(--dim)}.range-track{height:6px;background:var(--line-soft);border-radius:6px;position:relative;direction:ltr}.range-track span{width:12px;height:12px;background:var(--gold);border:2px solid var(--panel);border-radius:50%;position:absolute;top:-3px;left:50%;transform:translateX(-50%);display:none}.range-labels{display:flex;justify-content:space-between;direction:ltr;font:12px 'JetBrains Mono',monospace;color:var(--dim);margin:13px 0 25px}.small-note{font-size:12px;color:var(--dim-2);line-height:1.8;margin:12px 0}.driver-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.driver-card{padding:21px!important}.driver-title{display:flex;justify-content:space-between;gap:10px;align-items:center}.driver-title h3{margin:0;font-size:18px}.driver-card .driver-price{font:600 26px 'JetBrains Mono',monospace;text-align:right;margin:15px 0 7px}.driver-change{font:14px 'JetBrains Mono',monospace;text-align:right}.driver-explain{font-size:14px;line-height:1.7;min-height:3.4em;margin:15px 0}.driver-meta{font-size:12px;color:var(--dim-2);border-top:1px solid var(--line-soft);padding-top:10px}.driver-meta a{color:var(--dim-2);text-decoration:none}.yield-context{border-top:1px solid var(--line);margin-top:26px;padding-top:20px}.yield-context h3{font-size:16px;margin:0 0 16px}.yield-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.yield-card{display:flex;justify-content:space-between;align-items:center;gap:20px}.yield-card h4{font-size:16px;margin:0}.yield-card strong{font:600 26px 'JetBrains Mono',monospace}.yield-card p{font-size:13px;color:var(--dim);margin:5px 0}.yield-card a{font-size:12px}.source-row{display:flex;justify-content:space-between;gap:15px;font-size:12px;color:var(--dim-2);margin-top:12px}.calendar-controls{display:flex;gap:8px}.calendar-controls button.selected{background:#17283f;color:#fff;border-color:#17283f}.calendar-table td{vertical-align:top;font-size:14px}.calendar-table .en{font-size:12px;color:var(--dim-2);display:block;font-weight:400}.event-title{font-size:20px;font-weight:700;line-height:1.5;margin:8px 0}.event-description{font-size:14px;line-height:1.8;color:var(--dim)}.event-time{font:600 19px 'JetBrains Mono',monospace;text-align:right;margin:12px 0}.forecast-mini{display:grid;grid-template-columns:1fr 1fr;gap:15px;background:var(--panel-2);padding:13px;border-radius:3px}.forecast-mini small{font-size:12px;color:var(--dim);display:block}.forecast-mini strong{font-size:15px}.news-card{display:flex;flex-direction:column;min-height:185px;border-top:2px solid var(--gold)!important}.news-card h3{font-size:21px;line-height:1.55;margin:14px 0 20px}.news-card a{text-decoration:none;color:var(--text)}.news-card a:hover{color:var(--gold)}.news-source{font-size:12px;color:var(--gold);font-weight:600}.news-card .news-time{font-size:12px;color:var(--dim-2);margin-top:auto}.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.method-grid h3{font-size:18px;margin:0 0 12px}.method-grid p{font-size:14px;color:var(--dim);margin:0}footer>span{margin-inline-start:20px;color:var(--dim)}.unavailable{color:var(--red)!important}.stale-tag{font-size:12px;color:var(--red);display:block;margin-top:5px}@media(max-width:1100px){.driver-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.horizon h3{font-size:24px!important}.horizon strong{font-size:20px}.horizon-grid{gap:16px}.horizon:nth-child(2){padding-inline-start:16px}.summary-lead{font-size:17px}.driver-grid,.yield-grid,.method-grid{grid-template-columns:1fr}.section-top{align-items:start}.calendar-controls{flex-shrink:0}.calendar-controls button{padding:6px 9px;font-size:13px}.quote-stats strong{font-size:17px}.source-row{flex-wrap:wrap}.page-meta{align-items:start}.page-meta button{white-space:nowrap}.driver-explain{min-height:0}.news-card{min-height:0}.method-grid p{font-size:15px}footer>span{display:block;margin:10px 0}}
+</style><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%224%22%20fill%3D%22%2317283f%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2224%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%22%20font-weight%3D%22bold%22%20font-size%3D%2225%22%20fill%3D%22%23dfbf76%22%3EG%3C%2Ftext%3E%3C%2Fsvg%3E"></head><body><a class="skip-link" href="#main">דילוג לתוכן</a><div class="wrap"><header class="top"><div class="brand"><div><h1><span class="brand-mark">G</span><span class="brand-name" dir="ltr">GOLD<span>DESK</span></span></h1><p class="sub">תמונת מצב לשוק הזהב · GC / MGC</p></div><div class="head-tools"><button class="theme-btn" id="themeBtn" aria-pressed="false">מצב כהה</button><p class="clock"><b>שעון ישראל</b><span id="ilClock" dir="ltr">—</span></p></div></div><nav class="desk-nav" aria-label="ניווט ראשי"><a href="#overview" class="active">מצב הזהב</a><a href="#drivers">דולר ותשואות</a><a href="#calendar">יומן כלכלי</a><a href="#news">חדשות הזהב</a><a href="#method">איך נקראת התמונה</a><span dir="ltr">COMEX · GOLD</span></nav><div class="page-meta"><span id="marketStamp">טוען תמונת מצב…</span><button id="refreshAll">רענון נתונים ↻</button></div></header><main id="main">
+<section class="quote-panel" id="overview" aria-labelledby="quoteHeading"><div class="quote-panel-head"><div><p class="quote-kicker" dir="ltr">COMEX · GOLD FUTURES</p><h2 id="quoteHeading">חוזה הזהב המרכזי</h2><p id="quoteContract">מחבר למקור הנתונים…</p></div><span class="delay-tag">ציטוטים מושהים · רענון בכל דקה</span></div><div class="quote-content"><div class="quote-primary"><span class="quote-unit">מחיר אחרון · דולר לאונקיית טרוי</span><div class="quote-price" id="quotePrice" dir="ltr">—</div><div id="quoteChange" dir="ltr">—</div></div><div class="quote-stats"><div><span>פתיחה</span><strong id="quoteOpen" dir="ltr">—</strong></div><div><span>גבוה יומי</span><strong id="quoteHigh" dir="ltr">—</strong></div><div><span>נמוך יומי</span><strong id="quoteLow" dir="ltr">—</strong></div><div><span>נפח · חוזים</span><strong id="quoteVolume" dir="ltr">—</strong></div></div></div><div class="quote-footer"><p id="quoteStatus" role="status">טוען מחיר…</p><a href="https://finance.yahoo.com/quote/GC=F/" target="_blank" rel="noopener">Yahoo Finance ↗</a></div><p class="quote-footnote">מחיר GC מהספק, ולא ציטוט נפרד של MGC. חודש החוזה מופיע למעלה ועשוי להתחלף. רענון האתר אינו מבטל את השהיית המקור.</p></section>
+<div class="lead-grid"><section id="summary"><h2 class="eyebrow">תמונת המצב בזהב</h2><div class="card hero market-hero"><div class="horizon-grid"><div class="horizon"><span>התנועה היומית</span><h3 id="dayTitle">ממתין לנתונים</h3><strong id="dayValue" dir="ltr">—</strong><small>לעומת הסגירה הקודמת</small></div><div class="horizon"><span>התנועה השבועית</span><h3 id="weekTitle">ממתין לנתונים</h3><strong id="weekValue" dir="ltr">—</strong><small>לעומת הסגירה שלפני תחילת השבוע</small></div></div><p class="summary-lead" id="summaryText">הסיכום יופיע לאחר קבלת נתוני הזהב.</p><div class="interpretation"><span class="interpretation-label">פרשנות לשילוב הנתונים</span><p id="backgroundText">בודק את סביבת השוק…</p></div><div class="watch-box"><h4>מה דורש תשומת לב עכשיו</h4><ul id="watchList"><li>זמני הציטוט והזמינות יוצגו אחרי הטעינה.</li></ul></div><p class="stamp">תיאור מצב השוק על בסיס הנתונים האחרונים, ולא תחזית או אות כניסה לעסקה.</p></div></section><aside class="news-rail"><section><h2 class="eyebrow">האירוע הבא למעקב</h2><div class="card next-card" id="nextEventBox"><p class="empty-note">טוען את היומן הכלכלי…</p></div></section><section><h2 class="eyebrow">מיקום בתוך הטווח</h2><div class="card range-card"><div class="range-head"><strong>טווח היום</strong><span id="dayPosition">—</span></div><div class="range-track"><span id="dayMarker"></span></div><div class="range-labels"><span id="dayLow" dir="ltr">—</span><span id="dayHigh" dir="ltr">—</span></div><div class="range-head"><strong>טווח השבוע</strong><span id="weekPosition">—</span></div><div class="range-track"><span id="weekMarker"></span></div><div class="range-labels"><span id="weekLow" dir="ltr">—</span><span id="weekHigh" dir="ltr">—</span></div><p class="small-note">הקצוות הם גבוה ונמוך שנמדדו, ואינם רמות תמיכה או התנגדות מוכחות.</p></div></section></aside></div>
+<section id="drivers"><h2 class="eyebrow">מה קורה סביב הזהב</h2><div class="driver-grid" id="driverGrid"><div class="card">טוען דולר, תשואות, כסף ומדדי מניות…</div></div><p class="small-note">״תומך״ ו״לוחץ״ מתארים קשר כלכלי מקובל. הם אינם הוכחה לסיבת התנועה בזהב. להשוואה היומית נכללים רק ציטוטים סמוכים בזמן.</p><div class="yield-context"><h3>רקע מאקרו · נתונים יומיים</h3><div class="yield-grid" id="yieldGrid"><p class="small-note">טוען תשואות אג״ח לשנתיים ותשואה ריאלית…</p></div><p class="small-note">נתוני התשואות היומיים מתפרסמים לאחר יום המדידה; הם מספקים הקשר רחב ואינם משמשים כהוכחה לתנועה תוך־יומית.</p></div></section>
+<section id="calendar"><div class="section-top"><div><h2>יומן כלכלי לזהב</h2><p>פרסומים אמריקאיים · כל השעות בשעון ישראל</p></div><div class="calendar-controls"><button class="selected" data-period="today" aria-pressed="true">היום</button><button data-period="week" aria-pressed="false">השבוע</button></div></div><div class="card table-wrap"><table class="calendar-table"><thead><tr><th>מועד</th><th>אירוע</th><th>השפעה צפויה</th><th>צפי</th><th>קודם</th><th>בפועל</th></tr></thead><tbody id="calendarBody"><tr><td colspan="6">טוען אירועים…</td></tr></tbody></table></div><div class="source-row"><span id="calendarStamp">—</span><a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener">לוח המקור ↗</a></div><p class="small-note">המועד עשוי להשתנות. כשהמקור אינו מספק נתון בפועל, הדבר מסומן במפורש; מעבר שעת האירוע אינו אישור שהנתון פורסם.</p></section>
+<section id="news"><div class="section-top"><div><h2>חדשות למעקב בשוק הזהב</h2><p>כותרות עדכניות עם מקור וזמן פרסום</p></div><span class="small-note" id="newsStamp">טוען…</span></div><div class="article-grid" id="newsGrid"><div class="card">טוען חדשות…</div></div><p class="small-note">הכותרות מובאות מהמקורות. הן אינן קובעות אוטומטית כיוון לזהב; זמן פרסום כתבה וזמן הנתון הכלכלי עשויים להיות שונים.</p></section>
+<section id="method"><h2 class="eyebrow">איך נקראת תמונת המצב</h2><div class="method-grid"><div class="card"><h3>מחיר לפני פרשנות</h3><p>היום נמדד מול הסגירה הקודמת; השבוע מול הסגירה שלפני יום שני לפי תאריך המסחר של הספק. ״שינוי קטן״ מתאר תנועה של עד 0.15% ביום ועד 0.30% בשבוע — לא קביעה שיש דשדוש טכני.</p></div><div class="card"><h3>קשרים אינם חוק קבוע</h3><p>דולר ותשואות משמשים כרקע אפשרי, וכסף מספק הקשר למתכות. ES מציג את מצב שוק המניות בלבד. כשיש סתירה, היא מוצגת במקום להמציא מסקנה חד־משמעית.</p></div><div class="card"><h3>זמן הנתון הוא חלק מהנתון</h3><p>נתון שוק בן יותר מ־45 דקות מסומן כישן. הסיכום משווה ציטוטים בהפרש של עד 30 דקות ומאותו יום מסחר. כשמקור חסר, לא מחליפים אותו במספר קבוע ולא משלימים עובדות.</p></div></div><p class="small-note">Yahoo Finance מספק כאן נתונים מושהים. זמינות המקורות החינמיים אינה מובטחת; החלפת חודש בחוזה הספק עשויה ליצור הבדלים בהשוואה השבועית.</p></section>
+</main><footer><strong dir="ltr">GOLD DESK</strong><span>תמונת מצב לזהב · נתונים, הקשר ופרשנות שקופה</span><p>מקורות: Yahoo Finance · Forex Factory / Fair Economy · Federal Reserve / FRED · Google News. ללא ביצוע פעולות מסחר.</p></footer></div>
+<!-- CLIENT_SCRIPT --></body></html>
